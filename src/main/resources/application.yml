@@ -1,0 +1,26 @@
+#负责调整配置，behavior
+#yml文件的indentation必须对好
+logging:
+  level:
+    org.apache.coyote.http11.Http11InputBuffer: DEBUG # Incoming HTTP requests
+    org.springframework.jdbc.core: DEBUG # SQL
+
+spring:
+  sql:
+    init:
+      mode: ${INIT_DB:always}
+      schema-locations: "classpath:database-init.sql"
+  jackson:
+    default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE
+  datasource:
+#  “$”符号后面的是一个隐藏的密码，会在AWS上deploy
+#   5432是网卡端口
+    url: jdbc:postgresql://${DATABASE_URL:localhost}:5432/onlineorder
+    username: ${DATABASE_USERNAME:postgres}
+#  $的是AWS上的密码不显示在这里，secret是本地密码
+    password: ${DATABASE_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+  cache:
+    caffeine:
+      spec: expireAfterWrite=60s
