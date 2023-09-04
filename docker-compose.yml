@@ -1,0 +1,22 @@
+version: '3.8'
+#docker 版本
+
+services:
+
+
+  db:
+    image: postgres:15.2-alpine
+#    镜像，从docker的库里找来postgres SQL
+    environment:
+      #database setup
+      POSTGRES_DB: onlineorder
+      POSTGRES_PASSWORD: secret
+      TZ: UTC
+    volumes:
+      - onlineorder-pg-local:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+#docker端口：网卡端口映射
+
+volumes:
+  onlineorder-pg-local:
